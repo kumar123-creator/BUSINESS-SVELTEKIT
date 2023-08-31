@@ -17,6 +17,7 @@ export async function fetchCurrencyAndTimezones() {
                 value: currency.code,
                 label: currency.name,
             }));
+            console.log('Currency Options:', currencyOptions);
         } else {
             console.error('Invalid currency data format:', currencyData);
         }
@@ -30,6 +31,7 @@ export async function fetchCurrencyAndTimezones() {
                 id: index + 1,
             }));
             selectedTimezone = reactiveTimezoneOptions.length > 0 ? reactiveTimezoneOptions[0].code : null;
+            console.log('Timezone Options:', reactiveTimezoneOptions);
         } else {
             console.error('Invalid timezone data format:', timezoneData);
         }
@@ -81,15 +83,3 @@ export async function fetchCountries() {
     }
 };
     
-export async function fetchImage() {
-    const apiKey = "TEST45684CB2A93F41FC40869DC739BD4D126D77";
-    const uniqueParam = Date.now();
-    const apiUrl = `https://api.recruitly.io/api/business/profile?apiKey=${apiKey}&timestamp=${uniqueParam}`;
-    try {
-        const response = await fetch(apiUrl);
-        const data = await response.json();
-        imageUrl = data.logo.url;
-    } catch (error) {
-        console.error("Error fetching image:", error);
-    }
-};

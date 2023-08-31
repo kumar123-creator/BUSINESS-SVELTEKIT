@@ -1,6 +1,6 @@
 <script>
   import { onMount } from 'svelte';
-  import { fetchCurrencyAndTimezones, fetchCountryData, fetchCountries, fetchImage } from '$lib/api';
+  import { fetchCurrencyAndTimezones,  fetchCountryData, fetchCountries } from '$lib/api';
   import { Input, Label, Select } from "flowbite-svelte";
   import 'flowbite/dist/flowbite.css';
   import { MultiSelect } from 'flowbite-svelte';
@@ -27,6 +27,9 @@
         preferredCountryCode: "",
         preferredCountries: "",
     };
+    /**
+   * @type {any[]}
+   */
     let currencyOptions = [];
     let selectedTimezone;
     let reactiveTimezoneOptions = [];
@@ -64,13 +67,14 @@
             console.log(phone);
             website = data.website;
             currencyCode = data.currencyCode.code;
+            console.log(currencyCode);
             preferredDateformat = data.preferredDateFormat;
             timeZone = data.timeZone;
+            console.log(timeZone);
             preferredCountryCode = data.mobilePreferences.preferredCountryCode,
             preferredCountries = data.mobilePreferences.preferredCountries;
             selectedLabels = preferredCountries.split(",");
 
-            console.log(preferredCountries);
             preferredCountries1 = preferredCountries.toUpperCase();
             preferredCountryCode1 = preferredCountryCode.toUpperCase();
             console.log(preferredCountries1);
@@ -79,6 +83,7 @@
             console.error("Error fetching data:", error);
         }
     };
+    
 
   onMount(async () => {
     await fetchData();
@@ -86,6 +91,8 @@
     fetchImage();
     fetchCountryData();
     fetchCountries();
+
+    
 
     const inputElement = document.querySelector('#phone-input');
         iti = intlTelInput(inputElement, {
@@ -139,7 +146,7 @@
         }
     };
 	async function saveFormData() {
-        const Update = {
+        const Update = {    
             id,
             name,
             address: {
@@ -181,6 +188,20 @@
             );
         }
     };
+
+   async function fetchImage() {
+    const apiKey = "TEST45684CB2A93F41FC40869DC739BD4D126D77";
+    const uniqueParam = Date.now();
+    const apiUrl = `https://api.recruitly.io/api/business/profile?apiKey=${apiKey}&timestamp=${uniqueParam}`;
+    try {
+        const response = await fetch(apiUrl);
+        const data = await response.json();
+        imageUrl = data.logo.url;
+    } catch (error) {
+        console.error("Error fetching image:", error);
+    }
+};
+
  
 </script>
 <style>
